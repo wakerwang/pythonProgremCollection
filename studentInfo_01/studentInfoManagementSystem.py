@@ -81,7 +81,6 @@ def insert():
         save(studentList)
 
         print("学生信息录入完毕！")
-        show()
 
 
 def search():
@@ -164,9 +163,9 @@ def show_student(studentList):
     if not studentList:
         print("无数据信息\n")
         return
-    format_title = "{:^6}{:^12}\t{:^8}\t{:^10}\t{:^10}\t{:^12}"
+    format_title = "{:^6}{:^12}\t{:^8}\t{:^10}\t{:^10}\t{:^10}"
     print(format_title.format("ID", "名字", "英语成绩", "Python成绩", "C语言成绩", "总成绩"))
-    format_data = "{:^6{:^12}\t{:^12}\t{:^12}\t{:^12}\t{:^12}}"
+    format_data = "{:^6}{:^12}\t{:^8}\t{:^10}\t{:^10}\t{:^10}"
     for info in studentList:
         print(format_data.format(info.get("id"),
                                  info.get("name"),
