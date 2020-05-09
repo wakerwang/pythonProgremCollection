@@ -74,7 +74,7 @@ def insert():
 
         studentList.append(stdent)
         inputMark = input("是否继续添加？（Y/N）：")
-        if inputMark == "y":
+        if inputMark.lower() == "y":
             mark = True
         else:
             mark = False
@@ -84,7 +84,40 @@ def insert():
 
 
 def search():
-    pass
+    mark = True
+    student_query = []
+    while mark:
+        id = ""
+        name = ""
+        if os.path.exists(filename):
+            mode = input("按ID查询输入1；按姓名查询输入2：")
+            if mode == "1":
+                id = input("请输入学生ID:")
+            elif mode == "2":
+                name = input("请输入学生姓名:")
+            else:
+                print("输入有误，请重新输入！")
+                search()
+            with open(filename, "r") as file:
+                student = file.readlines()
+                for list in student:
+                    d = dict(eval(list))
+                    if id is not "":
+                        if d["id"] == id:
+                            student_query.append(d)
+                    elif name is not "":
+                        if d["name"] == name:
+                            student_query.append(d)
+                show_student(student_query)
+                student_query.clear()
+                inputMark = input("是否继续查询？（Y/N）:")
+                if inputMark.lower() == "y":
+                    mark = True
+                else:
+                    mark = False
+        else:
+            print("暂未保存数据信息...")
+            return
 
 
 # 删除学生信息
@@ -124,15 +157,83 @@ def delete():
 
 
 def modity():
-    pass
+    show()
+    if os.path.exists(filename):
+        with open(filename, "r") as rfile:
+            student_old = rfile.readlines()
+    else:
+        return
+    studentid = input("请输入要修改的学生ID：")
+    with open(filename, "w") as wfile:
+        for student in student_old:
+            d = dict(eval(student))
+            if d["id"] == studentid:
+                print("找到学生，可以修改！")
+                while True:
+                    try:
+                        d["name"] = input("请输入名字：")
+                        d["english"] = int(input("请输入英语成绩："))
+                        d["python"] = int(input("请输入python成绩："))
+                        d["c"] = int(input("请输入c语言成绩："))
+                    except:
+                        print("输入有误，请重新输入")
+                    else:
+                        break
+                student = str(d)
+                wfile.write(student + "\n")
+                print("修改成功")
+            else:
+                wfile.write(student)
+    mark = input("是否继续修改其他学生信息？（y/n）：")
+    if mark.lower() == "y":
+        modity()
 
 
 def sort():
-    pass
+    show()
+    if os.path.exists(filename):
+        with open(filename, "r") as file:
+            student_old = file.readlines()
+            student_new = []
+            for list in student_old:
+                d = dict(eval(list))
+                student_new.append(d)
+    else:
+        return
+
+    ascORdesc = input("请选择（0升序；1降序）：")
+    if ascORdesc == "0":
+        ascORdescBool = False
+    elif ascORdesc == "1":
+        ascORdescBool = True
+    else:
+        print("输入有误，请重新输入！")
+        sort()
+    mode = input("请选择排序方式（1 英语；2 python；3 c语言；0 总成绩）")
+    if mode == "1":
+        student_new.sort(key=lambda x: x["English"], reverse=ascORdescBool)
+    elif mode == "2":
+        student_new.sort(key=lambda x: x["Python"], reverse=ascORdescBool)
+    elif mode == "2":
+        student_new.sort(key=lambda x: x["C"], reverse=ascORdescBool)
+    elif mode == "0":
+        student_new.sort(key=lambda x: x["English"] + x["Python"] + x["C"], reverse=ascORdescBool)
+    else:
+        print("输入有误，请重新输入！")
+        sort()
+    show_student()
 
 
 def total():
-    pass
+    if os.path.exists(filename):
+        with open(filename, "r") as rfile:
+            student_old = rfile.readlines()
+            if student_old:
+                print("一共有%d名学生！" % len(student_old))
+            else:
+                print("还未录入学生信息!")
+    else:
+        print("暂未保存数据信息...")
 
 
 def show():
@@ -172,7 +273,7 @@ def show_student(studentList):
                                  str(info.get("English")),
                                  str(info.get("Python")),
                                  str(info.get("C")),
-                                 str(info.get("English")+info.get("Python")+info.get("C")).center(12)))
+                                 str(info.get("English") + info.get("Python") + info.get("C")).center(12)))
 
 
 if __name__ == '__main__':

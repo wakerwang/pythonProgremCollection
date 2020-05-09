@@ -1,2 +1,3 @@
 {'id': '1001', 'name': '王龙龙', 'English': 100, 'Python': 100, 'C': 100}
-{'id': '1002', 'name': '胡八一', 'English': 59, 'Python': 59, 'C': 59}
+{'id': '1002', 'name': '胡一', 'English': 59, 'Python': 59, 'C': 59, 'english': 59, 'python': 59, 'c': 59}
+{'id': '1001', 'name': '王龙龙', 'English': 100, 'Python': 100, 'C': 100}
